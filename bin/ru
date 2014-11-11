@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/rushed'
+
+begin
+  args = ARGV
+  command = args.shift
+  stdin = nil
+  # If the command starts with a '!', run it without stdin
+  if command.present? && command.start_with?('! ')
+    command = command[2..-1]
+  # If args is empty, read from stdin
+  elsif args.empty?
+    stdin = STDIN.read
+  end
+  process = Rushed::Process.new({
+    command: command,
+    args: args,
+    stdin: stdin
+  })
+  puts process.run
+rescue => e
+  STDERR.puts e.message
+  STDERR.puts e.backtrace.join("\n")
+  exit 1
+end
