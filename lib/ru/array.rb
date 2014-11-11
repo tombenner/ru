@@ -1,16 +1,16 @@
-module Rushed
+module Ru
   class Array
     def initialize(array)
       @data = array.to_a
     end
 
     def each_line
-      Rushed::Iterator.new(self)
+      Ru::Iterator.new(self)
     end
 
     def files
       @data.map! do |line|
-        Rushed::File.new(line)
+        Ru::File.new(line)
       end
       self
     end

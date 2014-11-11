@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Rushed::Process do
+describe Ru::Process do
   include FixturesHelper
   include ProcessHelper
 

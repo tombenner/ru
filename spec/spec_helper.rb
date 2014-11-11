@@ -1,4 +1,4 @@
-require 'rushed'
+require 'ru'
 
 require 'support/fixtures_helper'
 require 'support/process_helper'

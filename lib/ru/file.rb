@@ -1,6 +1,6 @@
 require 'etc'
 
-module Rushed
+module Ru
   class File
     def initialize(path)
       @path = path

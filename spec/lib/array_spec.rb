@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Rushed::Array do
+describe Ru::Array do
   describe "Array method" do
-    it "returns a Rushed::Array" do
+    it "returns a Ru::Array" do
       array = described_class.new(%w{john paul george ringo})
-      array.sort.should be_a(Rushed::Array)
+      array.sort.should be_a(Ru::Array)
     end
   end
 
@@ -30,9 +30,9 @@ describe Rushed::Array do
       array.map(:[], 0).should == %w{j p g r}
     end
 
-    it "returns a Rushed::Array" do
+    it "returns a Ru::Array" do
       array = described_class.new(%w{john paul george ringo})
-      array.map(:[], 0).should be_a(Rushed::Array)
+      array.map(:[], 0).should be_a(Ru::Array)
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Rushed::Iterator do
+describe Ru::Iterator do
   describe "#to_a" do
     it "returns the array" do
       iterator = described_class.new(%w{john paul george ringo})

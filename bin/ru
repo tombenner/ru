@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/rushed'
+require_relative '../lib/ru'
 
 begin
   args = ARGV
@@ -13,7 +13,7 @@ begin
   elsif args.empty?
     stdin = STDIN.read
   end
-  process = Rushed::Process.new({
+  process = Ru::Process.new({
     command: command,
     args: args,
     stdin: stdin

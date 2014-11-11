@@ -1,13 +1,13 @@
-Rushed
+Ru
 =====
 Ruby in your shell!
 
-<img src="https://raw.github.com/tombenner/rushed/master/doc/logo.png" />
+<img src="https://raw.github.com/tombenner/ru/master/doc/logo.png" />
 
 Overview
 --------
 
-Rushed brings Ruby's expressiveness, cleanliness, and readability to the command line.
+Ru brings Ruby's expressiveness, cleanliness, and readability to the command line.
 
 It lets you avoid looking up pesky options in man pages and Googling how to write a transformation in bash that would take you approximately 1s to write in Ruby.
 
@@ -23,7 +23,7 @@ Using traditional tools, this isn't as easy or readable:
 awk 'printf "%" int(40+length($0)/2) "s\n", $0' myfile
 ```
 
-For another example, let's compare summing the lines of a list of integers using Rushed vs. a traditional approach:
+For another example, let's compare summing the lines of a list of integers using Ru vs. a traditional approach:
 
 ```bash
 ru 'map(:to_i).sum' myfile
@@ -33,7 +33,7 @@ ru 'map(:to_i).sum' myfile
 awk '{s+=$1} END {print s}' myfile
 ```
 
-Any method from Ruby Core and Active Support can be used. Rushed also provides some new methods to make transformations easier. Here are some variations on the above example:
+Any method from Ruby Core and Active Support can be used. Ru also provides some new methods to make transformations easier. Here are some variations on the above example:
 
 ```bash
 ru 'map(:to_i, 10).sum' myfile
@@ -50,7 +50,7 @@ Installation
 ------------
 
 ```bash
-gem install rushed
+gem install ru
 ```
 
 You can now use Ruby in your shell!
@@ -67,7 +67,7 @@ Usage
 
 See [Examples](#examples) below, too!
 
-Rushed reads from stdin:
+Ru reads from stdin:
 
 ```bash
 $ echo "2\n3" | ru 'map(:to_i).sum'
@@ -92,12 +92,12 @@ $ ru '! 2 + 3'
 5
 ```
 
-In addition to the methods provided by Ruby Core and Active Support, Rushed provides other methods for performing transformations, like `each_line`, `files`, and `grep`. See [Methods](#methods) for more.
+In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations, like `each_line`, `files`, and `grep`. See [Methods](#methods) for more.
 
 Examples
 --------
 
-Let's compare the readability and conciseness of Rushed relative to existing tools:
+Let's compare the readability and conciseness of Ru relative to existing tools:
 
 #### Center lines
 
@@ -171,7 +171,7 @@ awk --re-interval '{ match($0, /(([^[:space:]]+|\[[^\]]+\]|"[^"]+")[[:space:]]+)
 Methods
 -------
 
-In addition to the methods provided by Ruby Core and Active Support, Rushed provides other methods for performing transformations.
+In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations.
 
 #### each_line
 
@@ -189,7 +189,7 @@ ru 'each_line.strip.to_a.map(:center, 80)' myfile
 
 #### files
 
-Converts the lines to `Rushed::File` objects (see Rushed::File below).
+Converts the lines to `Ru::File` objects (see Ru::File below).
 
 ```bash
 $ echo "foo.txt" | ru 'files.map(:updated_at).map(:strftime, ""%Y-%m-%d")'
@@ -198,7 +198,7 @@ $ echo "foo.txt" | ru 'files.map(:updated_at).map(:strftime, ""%Y-%m-%d")'
 
 #### format(format='l')
 
-Formats a list of `Rushed::File`s. You'll typically call this after calling `files` to transform them into strings:
+Formats a list of `Ru::File`s. You'll typically call this after calling `files` to transform them into strings:
 
 ```bash
 $ ru 'files.format'
@@ -238,10 +238,10 @@ $ echo "john\npaul" | ru 'each_line[0]'
 $ echo "john\npaul" | ru 'each_line.center(8, ".")'
 ```
 
-Rushed::File
+Ru::File
 ------------
 
-The [`files`](#files) method returns an enumerable of `Rushed::File`s, which are similar to Ruby Core's [`File`](http://ruby-doc.org/core-2.0/File.html). Each one has the following methods:
+The [`files`](#files) method returns an enumerable of `Ru::File`s, which are similar to Ruby Core's [`File`](http://ruby-doc.org/core-2.0/File.html). Each one has the following methods:
 
 * `basename`
 * `created_at` (alias for ctime)
@@ -275,4 +275,4 @@ appraisal rspec
 License
 -------
 
-Rushed is released under the MIT License. Please see the MIT-LICENSE file for details.
+Ru is released under the MIT License. Please see the MIT-LICENSE file for details.

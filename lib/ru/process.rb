@@ -1,4 +1,4 @@
-module Rushed
+module Ru
   class Process
     def initialize(options={})
       @command = options[:command]
@@ -15,7 +15,7 @@ module Rushed
         @stdin = paths.map { |path| ::File.open(path).read }.join("\n")
       end
       lines = @stdin.present? ? @stdin.split("\n") : []
-      array = Rushed::Array.new(lines)
+      array = Ru::Array.new(lines)
       output = array.instance_eval(@command) || @stdin
       if output.respond_to?(:to_dotsch_output)
         output = output.to_dotsch_output

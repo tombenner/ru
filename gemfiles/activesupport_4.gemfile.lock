@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    rushed (0.0.1)
+    ru (0.0.1)
       activesupport
 
 GEM
@@ -46,4 +46,4 @@ DEPENDENCIES
   activesupport (= 4.1.7)
   appraisal
   rspec
-  rushed!
+  ru!

@@ -4,7 +4,7 @@ module ProcessHelper
       stdin = stdin.join("\n")
     end
     command = args.shift
-    process = Rushed::Process.new({
+    process = Ru::Process.new({
       command: command,
       args: args,
       stdin: stdin

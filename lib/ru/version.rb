@@ -1,3 +1,3 @@
-module Rushed
+module Ru
   VERSION = '0.0.2'
 end

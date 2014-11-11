@@ -1,4 +1,4 @@
-module Rushed
+module Ru
   class Iterator
     class << self
       def redefined_methods
@@ -17,7 +17,7 @@ module Rushed
     end
 
     def to_a
-      Rushed::Array.new(@array)
+      Ru::Array.new(@array)
     end
 
     def to_dotsch_output
