@@ -189,7 +189,7 @@ ru 'each_line.strip.to_a.map(:center, 80)' myfile
 
 #### files
 
-Converts the lines to `Rushed::File` objects (see Dotsch::File below).
+Converts the lines to `Rushed::File` objects (see Rushed::File below).
 
 ```bash
 $ echo "foo.txt" | ru 'files.map(:updated_at).map(:strftime, ""%Y-%m-%d")'
@@ -198,7 +198,7 @@ $ echo "foo.txt" | ru 'files.map(:updated_at).map(:strftime, ""%Y-%m-%d")'
 
 #### format(format='l')
 
-Formats a list of `Dotsch::File`s. You'll typically call this after calling `files` to transform them into strings:
+Formats a list of `Rushed::File`s. You'll typically call this after calling `files` to transform them into strings:
 
 ```bash
 $ ru 'files.format'
@@ -237,6 +237,31 @@ Note that the examples above can also be performed with `each_line`:
 $ echo "john\npaul" | ru 'each_line[0]'
 $ echo "john\npaul" | ru 'each_line.center(8, ".")'
 ```
+
+Rushed::File
+------------
+
+The [`files`](#files) method returns an enumerable of `Rushed::File`s, which are similar to Ruby Core's [`File`](http://ruby-doc.org/core-2.0/File.html). Each one has the following methods:
+
+* `basename`
+* `created_at` (alias for ctime)
+* `ctime`
+* `extname`
+* `format` (see the [`format`](#formatformatl) method above)
+* `ftype`
+* `gid`
+* `group`
+* `mode`
+* `mtime`
+* `name` (alias for basename)
+* `omode`
+* `owner`
+* `size`
+* `to_s` (alias for name)
+* `uid`
+* `updated_at` (alias for mtime)
+* `world_readable?`
+
 
 Testing
 -------
