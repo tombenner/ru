@@ -2,9 +2,7 @@ Rushed
 =====
 Ruby in your shell!
 
-<div style="display: inline-block; padding: 0px 10px 5px 10px; background: #000; color: #fff; font-weight: bold; font-size: 24px; border-radius: 5px; border: 5px solid #ccc;">
-\> <img src="http://i.imgur.com/z3t1lIK.png" width="18" />
-</div>
+<img src="https://raw.github.com/tombenner/rushed/master/doc/logo.png" />
 
 Overview
 --------
@@ -238,6 +236,15 @@ Note that the examples above can also be performed with `each_line`:
 ```bash
 $ echo "john\npaul" | ru 'each_line[0]'
 $ echo "john\npaul" | ru 'each_line.center(8, ".")'
+```
+
+Testing
+-------
+
+Nested Hstore is tested against ActiveRecord 3 and 4. If you'd like to submit a PR, please be sure to use [Appraisal](https://github.com/thoughtbot/appraisal) to test your changes in both contexts:
+
+```bash
+appraisal rspec
 ```
 
 License
