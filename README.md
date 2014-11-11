@@ -33,7 +33,7 @@ ru 'map(:to_i).sum' myfile
 awk '{s+=$1} END {print s}' myfile
 ```
 
-Any method from Ruby Core and Active Support can be used. Ru also provides some new methods to make transformations easier. Here are some variations on the above example:
+Any method from Ruby Core and Active Support can be used. Ru also provides new methods to make transformations easier. Here are some variations on the above example:
 
 ```bash
 ru 'map(:to_i, 10).sum' myfile
