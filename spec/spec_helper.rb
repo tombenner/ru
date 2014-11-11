@@ -1,4 +1,3 @@
-require 'rspec/autorun'
 require 'rushed'
 
 require 'support/fixtures_helper'
