@@ -94,6 +94,8 @@ $ ru '! 2 + 3'
 5
 ```
 
+The code argument is run as if it has `$stdin.each_line.map(&:chomp).` prepended to it. The result is converted to a string and printed. So, if you run `ru 'map(&:to_i).sum'`, you can think of it as running `puts $stdin.each_line.map(&:chomp).map(&:to_i).sum`.
+
 In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations, like `each_line`, `files`, and `grep`. See [Methods](#methods) for more.
 
 Examples
