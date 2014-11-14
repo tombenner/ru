@@ -1,0 +1,33 @@
+Ru (version <%= version %>)
+Ruby in your shell!
+
+Ru brings Ruby's expressiveness, cleanliness, and readability to the command line. It lets you avoid looking up pesky options in man pages and Googling how to write a transformation in bash that would take you approximately 1s to write in Ruby.
+
+For example, to center a file's lines, use String#center:
+ru 'map(:center, 80)' myfile
+
+To sum the lines of a list of integers:
+ru 'map(:to_i).sum' myfile
+
+Ru reads from stdin:
+$ echo "2\n3" | ru 'map(:to_i).sum'
+5
+$ cat myfile | ru 'map(:to_i).sum'
+5
+
+Or from file(s):
+$ ru 'map(:to_i).sum' myfile
+5
+$ ru 'map(:to_i).sum' myfile myfile
+10
+
+You can also run Ruby code without any input by prepending a `! `:
+$ ru '! 2 + 3'
+5
+
+The code argument is run as if it has `$stdin.each_line.map(&:chomp).` prepended to it. The result is converted to a string and printed. So, if you run `ru 'map(:to_i).sum'`, you can think of it as `puts $stdin.each_line.map(&:chomp).map(:to_i).sum`.
+
+In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations, like `each_line`, `files`, and `grep`.
+
+To read more, see the README:
+https://github.com/tombenner/ru

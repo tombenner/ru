@@ -7,9 +7,13 @@ module Ru
       if @command.kind_of?(String) && @command.start_with?('[')
         @command = 'to_stdout' + @command
       end
+      @options = Options.new
     end
 
     def run
+      if @options.exists?(@command)
+        return @options.run(@command)
+      end
       paths = @args
       if @stdin.blank? && paths.present?
         @stdin = paths.map { |path| ::File.open(path).read }.join("\n")

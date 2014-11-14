@@ -63,5 +63,35 @@ describe Ru::Process do
         expect { out = run(lines, 'foo') }.to raise_error(NoMethodError)
       end
     end
+
+    describe "options" do
+      context "-h" do
+        it "shows help" do
+          out = run('', '--help')
+          out.should include('Ruby in your shell!')
+        end
+      end
+
+      context "--help" do
+        it "shows help" do
+          out = run('', '-h')
+          out.should include('Ruby in your shell!')
+        end
+      end
+
+      context "-v" do
+        it "shows the version" do
+          out = run('', '--version')
+          out.should == Ru::VERSION
+        end
+      end
+
+      context "--version" do
+        it "shows the version" do
+          out = run('', '--version')
+          out.should == Ru::VERSION
+        end
+      end
+    end
   end
 end

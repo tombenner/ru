@@ -9,8 +9,8 @@ begin
   # If the command starts with a '!', run it without stdin
   if command.present? && command.start_with?('! ')
     command = command[2..-1]
-  # If args is empty, read from stdin
-  elsif args.empty?
+  # If args is empty and an option (e.g. -h, --help, -v, --version) isn't present, read from stdin
+  elsif args.empty? && !command.try(:start_with?, '-')
     stdin = STDIN.read
   end
   process = Ru::Process.new({
