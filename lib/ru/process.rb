@@ -11,6 +11,10 @@ module Ru
     end
 
     def run
+      if @command.nil?
+        STDERR.puts @options.run('--help')
+        exit 1
+      end
       if @options.exists?(@command)
         return @options.run(@command)
       end
