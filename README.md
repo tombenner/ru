@@ -98,6 +98,16 @@ The code argument is run as if it has `$stdin.each_line.map(&:chomp).` prepended
 
 In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations, like `each_line`, `files`, and `grep`. See [Methods](#methods) for more.
 
+### Options
+
+#### -h, --help
+
+Print a help page.
+
+#### -v, --version
+
+Print the installed version of Ru.
+
 Examples
 --------
 
