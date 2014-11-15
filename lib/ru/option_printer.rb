@@ -1,8 +1,7 @@
 require 'erb'
 
-# TODO: If more options are added, we should use OptionParser
 module Ru
-  class Options
+  class OptionPrinter
     def exists?(option_key)
       options[option_key].present?
     end
@@ -15,10 +14,8 @@ module Ru
 
     def options
       {
-        '-h' => :get_help,
-        '--help' => :get_help,
-        '-v' => :get_version,
-        '--version' => :get_version
+        help: :get_help,
+        version: :get_version
       }
     end
 

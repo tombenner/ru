@@ -7,7 +7,7 @@ describe Ru::Process do
   describe "#run" do
     it "runs []" do
       lines = %w{john paul george ringo}
-      out = run(lines, '[1,2]')
+      out = run('[1,2]', lines)
       out.should == "paul\ngeorge"
     end
 
@@ -16,7 +16,7 @@ describe Ru::Process do
         fixture_path('files', 'bar.txt'),
         fixture_path('files', 'foo.txt')
       ]
-      out = run(paths, 'files')
+      out = run('files', paths)
       out.should == "bar.txt\nfoo.txt"
     end
 
@@ -25,7 +25,7 @@ describe Ru::Process do
         fixture_path('files', 'bar.txt'),
         fixture_path('files', 'foo.txt')
       ]
-      out = run(paths, "files.format('l')")
+      out = run("files.format('l')", paths)
       lines = out.split("\n")
       lines.length.should == 2
       lines.each do |line|
@@ -36,59 +36,83 @@ describe Ru::Process do
 
     it "runs grep" do
       lines = %w{john paul george ringo}
-      out = run(lines, "grep(/o[h|r]/)")
+      out = run("grep(/o[h|r]/)", lines)
       out.should == "john\ngeorge"
     end
 
     it "runs map with two arguments" do
       lines = %w{john paul george ringo}
-      out = run(lines, 'map(:[], 0)')
+      out = run('map(:[], 0)', lines)
       out.should == %w{j p g r}.join("\n")
     end
 
     it "runs sort" do
       lines = %w{john paul george ringo}
-      out = run(lines, 'sort')
+      out = run('sort', lines)
       out.should == lines.sort.join("\n")
     end
 
     it "takes files as arguments" do
-      out = run('', 'to_s', fixture_path('files', 'foo.txt'))
+      out = run(['to_s', fixture_path('files', 'foo.txt')])
       out.should == "foo\nfoo\nfoo"
+    end
+
+    context "no arguments" do
+      it "prints help" do
+        STDERR.should_receive(:puts) do |out|
+          out.should include('Ruby in your shell!')
+        end
+        Ru::Process.any_instance.should_receive(:exit).with(1)
+        run('')
+      end
     end
 
     context "an undefined method" do
       it "raises a NoMethodError" do
         lines = %w{john paul george ringo}
-        expect { out = run(lines, 'foo') }.to raise_error(NoMethodError)
+        expect { out = run('foo', lines) }.to raise_error(NoMethodError)
       end
     end
 
     describe "options" do
       context "-h" do
         it "shows help" do
-          out = run('', '--help')
+          out = run('--help')
           out.should include('Ruby in your shell!')
         end
       end
 
       context "--help" do
         it "shows help" do
-          out = run('', '-h')
+          out = run('-h')
+          out.should include('Ruby in your shell!')
+        end
+      end
+
+      context "help with a second argument" do
+        it "shows help" do
+          out = run(['--help', 'foo'])
           out.should include('Ruby in your shell!')
         end
       end
 
       context "-v" do
         it "shows the version" do
-          out = run('', '--version')
+          out = run('-v')
           out.should == Ru::VERSION
         end
       end
 
       context "--version" do
         it "shows the version" do
-          out = run('', '--version')
+          out = run('--version')
+          out.should == Ru::VERSION
+        end
+      end
+
+      context "version with a second argument" do
+        it "shows the version" do
+          out = run(['--version', 'foo'])
           out.should == Ru::VERSION
         end
       end

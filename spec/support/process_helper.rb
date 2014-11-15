@@ -1,14 +1,18 @@
 module ProcessHelper
-  def run(stdin, *args)
+  def run(args, stdin=nil)
+    if args.kind_of?(String)
+      args = [args]
+    end
+    stub_const('ARGV', args)
+
     if stdin.kind_of?(Array)
       stdin = stdin.join("\n")
     end
-    command = args.shift
-    process = Ru::Process.new({
-      command: command,
-      args: args,
-      stdin: stdin
-    })
+    stdin_double = double
+    stdin_double.stub(:read).and_return(stdin)
+    stub_const('STDIN', stdin_double)
+
+    process = Ru::Process.new
     process.run
   end
 end
