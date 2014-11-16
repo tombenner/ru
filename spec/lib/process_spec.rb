@@ -80,6 +80,25 @@ describe Ru::Process do
     end
 
     describe "command management" do
+      describe "list" do
+        it "lists the commands" do
+          Ru::CommandManager.any_instance.stub(:get_commands).and_return({
+            'product' => 'map(:to_i).reduce(:*)',
+            'sum' => 'map(:to_i).sum',
+          })
+          out = run(['list'])
+          out.should == "Saved commands:\nproduct\tmap(:to_i).reduce(:*)\nsum\tmap(:to_i).sum"
+        end
+
+        context "no saved commands" do
+          it "shows a message" do
+            Ru::CommandManager.any_instance.stub(:get_commands).and_return({})
+            out = run(['list'])
+            out.should == "No saved commands. To save a command, use `save`:\nru save sum 'map(:to_i).sum'"
+          end
+        end
+      end
+
       describe "run" do
         it "runs the command" do
           Ru::CommandManager.any_instance.stub(:get_commands).and_return({ 'sum' => 'map(:to_i).sum' })

@@ -116,6 +116,14 @@ $ ru run sum myfile
 5
 ```
 
+To see all of your saved commands, use `list`:
+
+```bash
+$ ru list
+Saved commands:
+sum	map(:to_i).sum
+```
+
 ### Options
 
 #### -h, --help

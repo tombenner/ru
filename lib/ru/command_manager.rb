@@ -19,6 +19,10 @@ module Ru
       commands[name]
     end
 
+    def all
+      get_commands
+    end
+
     private
 
     def save_commands(commands)
