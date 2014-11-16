@@ -3,6 +3,7 @@ require 'optparse'
 module Ru
   class Process
     def initialize(options={})
+      @command_manager = CommandManager.new
       @option_printer = OptionPrinter.new
     end
 
@@ -13,13 +14,30 @@ module Ru
       args = ARGV
       first_arg = args.shift
 
-      if first_arg.blank?
+      if first_arg == 'save'
+        name = args[0]
+        code = args[1]
+        @command_manager.save(name, code)
+        return "Saved command: #{name} is '#{code}'"
+      elsif first_arg == 'run'
+        name = args.shift
+        @code = @command_manager.get(name)
+        if @code.blank?
+          STDERR.puts "Unable to find command '#{name}'"
+          exit 1
+          return
+        end
+      elsif first_arg.blank?
         STDERR.puts @option_printer.run(:help)
         exit 1
+        return
+      else
+        @code = first_arg
       end
 
-      @code = prepare_code(first_arg)
-      @stdin = get_stdin(args)
+      @stdin = get_stdin(args) unless @code.start_with?('! ')
+      @code = prepare_code(@code) if @code
+
       lines = @stdin.present? ? @stdin.split("\n") : []
       array = Ru::Array.new(lines)
       output = array.instance_eval(@code) || @stdin

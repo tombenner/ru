@@ -57,6 +57,11 @@ describe Ru::Process do
       out.should == "foo\nfoo\nfoo"
     end
 
+    it "runs code prepended by '! '" do
+      out = run('! 2 + 3')
+      out.should == '5'
+    end
+
     context "no arguments" do
       it "prints help" do
         STDERR.should_receive(:puts) do |out|
@@ -71,6 +76,41 @@ describe Ru::Process do
       it "raises a NoMethodError" do
         lines = %w{john paul george ringo}
         expect { out = run('foo', lines) }.to raise_error(NoMethodError)
+      end
+    end
+
+    describe "command management" do
+      describe "run" do
+        it "runs the command" do
+          Ru::CommandManager.any_instance.stub(:get_commands).and_return({ 'sum' => 'map(:to_i).sum' })
+          out = run(['run', 'sum'], "2\n3")
+          out.should == '5'
+        end
+
+        context "no command name" do
+          it "raises an InvalidNameError" do
+            expect { run(['run']) }.to raise_error(Ru::CommandManager::InvalidNameError)
+          end
+        end
+      end
+
+      describe "save" do
+        it "saves the command" do
+          Ru::CommandManager.any_instance.should_receive(:save_commands)
+          run(['save', 'foo', 'map(:to_i).sum'])
+        end
+
+        context "no code" do
+          it "raises an InvalidCodeError" do
+            expect { run(['save', 'foo']) }.to raise_error(Ru::CommandManager::InvalidCodeError)
+          end
+        end
+
+        context "invalid command name" do
+          it "raises an InvalidNameError" do
+            expect { run(['save', 'foo-bar', 'map(:to_i).sum']) }.to raise_error(Ru::CommandManager::InvalidNameError)
+          end
+        end
       end
     end
 
