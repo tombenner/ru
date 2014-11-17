@@ -35,7 +35,7 @@ ru 'map(:to_i).sum' myfile
 awk '{s+=$1} END {print s}' myfile
 ```
 
-Any method from Ruby Core and Active Support can be used. Ru also provides new methods to make transformations easier. Here are some variations on the above example:
+Any method from Ruby Core and Active Support can be used. Ru also provides new methods (and modifies [#map](#map)) to make transformations easier. Here are some variations on the above example:
 
 ```bash
 ru 'map(:to_i, 10).sum' myfile
@@ -226,7 +226,7 @@ george
 
 #### map
 
-This is the same as `Array#map`, but it adds a new syntax that allows you to easily pass arguments to a method. For example:
+This is the same as [Array#map](http://www.ruby-doc.org/core-2.0/Array.html#method-i-map), but it adds a new syntax that allows you to easily pass arguments to a method. For example:
 
 ```bash
 $ echo "john\npaul" | ru 'map(:[], 0)'
