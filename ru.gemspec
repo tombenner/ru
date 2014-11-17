@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.version       = Ru::VERSION
   s.license       = 'MIT'
 
-  s.add_dependency 'activesupport'
+  s.add_dependency 'activesupport', '>= 3.2.0'
 
-  s.add_development_dependency 'appraisal'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'appraisal', '~> 1.0'
+  s.add_development_dependency 'rspec', '~> 3.1'
 end
