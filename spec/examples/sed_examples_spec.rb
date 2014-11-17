@@ -9,7 +9,7 @@ describe 'sed examples' do
     it "centers" do
       lines = %w{john paul george} + ['             ringo      ']
       out = run('each_line.strip.center(10)', lines)
-      out.should == "   john   \n   paul   \n  george  \n  ringo   "
+      expect(out).to eq("   john   \n   paul   \n  george  \n  ringo   ")
     end
   end
 
@@ -17,7 +17,7 @@ describe 'sed examples' do
     it "increments" do
       lines = ('5'..'10').to_a
       out = run('(each_line.to_i+1)', lines)
-      out.should == ('6'..'11').to_a.join("\n")
+      expect(out).to eq(('6'..'11').to_a.join("\n"))
     end
   end
 
@@ -25,7 +25,7 @@ describe 'sed examples' do
     it "reverses" do
       lines = %w{john paul george ringo}
       out = run('each_line.reverse', lines)
-      out.should == "nhoj\nluap\negroeg\nognir"
+      expect(out).to eq("nhoj\nluap\negroeg\nognir")
     end
   end
 
@@ -33,7 +33,7 @@ describe 'sed examples' do
     it "numbers" do
       lines = %w{john paul george ringo}
       out = run('map.with_index { |line, index| "#{(index+1).to_s.rjust(6)}  #{line}" }', lines)
-      out.should == "     1  john\n     2  paul\n     3  george\n     4  ringo"
+      expect(out).to eq("     1  john\n     2  paul\n     3  george\n     4  ringo")
     end
   end
 
@@ -41,7 +41,7 @@ describe 'sed examples' do
     it "counts" do
       lines = %w{john paul george ringo}
       out = run('length', lines)
-      out.should == "4"
+      expect(out).to eq("4")
     end
   end
 
@@ -49,7 +49,7 @@ describe 'sed examples' do
     it "prints" do
       lines = %w{john paul george ringo}
       out = run('[0,2]', lines)
-      out.should == "john\npaul"
+      expect(out).to eq("john\npaul")
     end
   end
 
@@ -57,7 +57,7 @@ describe 'sed examples' do
     it "prints" do
       lines = %w{john paul george ringo}
       out = run('[2..-1]', lines)
-      out.should == "george\nringo"
+      expect(out).to eq("george\nringo")
     end
   end
 
@@ -65,7 +65,7 @@ describe 'sed examples' do
     it "dedupes" do
       lines = %w{john john paul george george george ringo}
       out = run('uniq', lines)
-      out.should == "john\npaul\ngeorge\nringo"
+      expect(out).to eq("john\npaul\ngeorge\nringo")
     end
   end
 
@@ -73,7 +73,7 @@ describe 'sed examples' do
     it "prints" do
       lines = %w{john john paul george george george ringo}
       out = run('select { |line| self.count(line) > 1 }', lines)
-      out.should == "john\njohn\ngeorge\ngeorge\ngeorge"
+      expect(out).to eq("john\njohn\ngeorge\ngeorge\ngeorge")
     end
   end
 
@@ -81,7 +81,7 @@ describe 'sed examples' do
     it "removes" do
       lines = %w{john john paul george george george ringo}
       out = run('select { |line| self.count(line) == 1 }', lines)
-      out.should == "paul\nringo"
+      expect(out).to eq("paul\nringo")
     end
   end
 
@@ -89,7 +89,7 @@ describe 'sed examples' do
     it "squeezes" do
       lines = "john\n\npaul\ngeorge\n\n\nringo"
       out = run('to_s.squeeze("\n")', lines)
-      out.should == "john\npaul\ngeorge\nringo"
+      expect(out).to eq("john\npaul\ngeorge\nringo")
     end
   end
 end

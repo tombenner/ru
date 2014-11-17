@@ -9,7 +9,7 @@ module ProcessHelper
       stdin = stdin.join("\n")
     end
     stdin_double = double
-    stdin_double.stub(:read).and_return(stdin)
+    allow(stdin_double).to receive(:read).and_return(stdin)
     stub_const('STDIN', stdin_double)
 
     process = Ru::Process.new
