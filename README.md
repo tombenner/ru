@@ -98,42 +98,6 @@ The code argument is run as if it has `$stdin.each_line.map(&:chomp).` prepended
 
 In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations, like `each_line`, `files`, and `grep`. See [Methods](#methods) for more.
 
-### Saving commands
-
-You can save commands for future use using `save`:
-
-```bash
-$ ru save sum 'map(:to_i).sum'
-Saved command: sum is 'map(:to_i).sum'
-```
-
-And run them later using `run`:
-
-```bash
-$ echo "2\n3" | ru run sum
-5
-$ ru run sum myfile
-5
-```
-
-To see all of your saved commands, use `list`:
-
-```bash
-$ ru list
-Saved commands:
-sum	map(:to_i).sum
-```
-
-### Options
-
-#### -h, --help
-
-Print a help page.
-
-#### -v, --version
-
-Print the installed version of Ru.
-
 Examples
 --------
 
@@ -302,6 +266,43 @@ The [`files`](#files) method returns an enumerable of `Ru::File`s, which are sim
 * `updated_at` (alias for mtime)
 * `world_readable?`
 
+Saving commands
+---------------
+
+You can save commands for future use using `save`:
+
+```bash
+$ ru save sum 'map(:to_i).sum'
+Saved command: sum is 'map(:to_i).sum'
+```
+
+And run them later using `run`:
+
+```bash
+$ echo "2\n3" | ru run sum
+5
+$ ru run sum myfile
+5
+```
+
+To see all of your saved commands, use `list`:
+
+```bash
+$ ru list
+Saved commands:
+sum	map(:to_i).sum
+```
+
+Options
+-------
+
+#### -h, --help
+
+Print a help page.
+
+#### -v, --version
+
+Print the installed version of Ru.
 
 Testing
 -------
