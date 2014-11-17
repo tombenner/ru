@@ -266,17 +266,23 @@ The [`files`](#files) method returns an enumerable of `Ru::File`s, which are sim
 * `updated_at` (alias for mtime)
 * `world_readable?`
 
-Saving commands
----------------
+Saved Commands
+--------------
 
-You can save commands for future use using `save`:
+Ru lets you save commands by name, so that you can easily use them later.
+
+#### save
+
+Save a command for future use:
 
 ```bash
 $ ru save sum 'map(:to_i).sum'
 Saved command: sum is 'map(:to_i).sum'
 ```
 
-And run them later using `run`:
+#### run
+
+Run a saved command:
 
 ```bash
 $ echo "2\n3" | ru run sum
@@ -285,7 +291,9 @@ $ ru run sum myfile
 5
 ```
 
-To see all of your saved commands, use `list`:
+#### list
+
+List all of your saved commands:
 
 ```bash
 $ ru list
