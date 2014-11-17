@@ -42,8 +42,10 @@ ru 'map(:to_i, 10).sum' myfile
 ru 'map(:to_i).reduce(&:+)' myfile
 ru 'each_line.to_i.to_a.sum' myfile
 ru 'grep(/^\d+$/).map(:to_i).sum' myfile
+ru 'map { |n| n.to_i }.reduce(&:+)' myfile
 ru 'reduce(0) { |sum, n| sum + n.to_i }' myfile
 ru 'each_line.match(/(\d+)/)[1].to_i.to_a.sum' myfile
+ru 'map { |n| n.to_i }.reduce(0) { |sum, n| sum + n }' myfile
 ```
 
 See [Examples](#examples) and [Methods](#methods) for more.
