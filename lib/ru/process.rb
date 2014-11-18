@@ -71,8 +71,8 @@ module Ru
     end
 
     def prepare_output(output)
-      if output.respond_to?(:to_dotsch_output)
-        output = output.to_dotsch_output
+      if output.respond_to?(:to_stdout)
+        output = output.to_stdout
       end
       if output.kind_of?(::Array)
         output = output.join("\n")

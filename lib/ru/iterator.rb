@@ -20,7 +20,7 @@ module Ru
       Ru::Array.new(@array)
     end
 
-    def to_dotsch_output
+    def to_stdout
       to_a.join("\n")
     end
 

@@ -8,16 +8,16 @@ describe Ru::Iterator do
     end
   end
   
-  describe "#to_dotsch_output" do
+  describe "#to_stdout" do
     it "returns the string" do
       iterator = described_class.new(%w{john paul george ringo})
-      expect(iterator.to_dotsch_output).to eq("john\npaul\ngeorge\nringo")
+      expect(iterator.to_stdout).to eq("john\npaul\ngeorge\nringo")
     end
 
     context "with a method called on it" do
       it "returns the string" do
         iterator = described_class.new(%w{john paul george ringo})
-        expect(iterator.to_s.to_dotsch_output).to eq("john\npaul\ngeorge\nringo")
+        expect(iterator.to_s.to_stdout).to eq("john\npaul\ngeorge\nringo")
       end
     end
   end
