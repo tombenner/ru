@@ -48,10 +48,6 @@ module Ru
       delegate_to_array(:select, *args, &block)
     end
 
-    def to_stdout
-      self
-    end
-
     def to_a
       @data
     end
@@ -62,6 +58,10 @@ module Ru
 
     def to_s
       self.to_a.join("\n")
+    end
+
+    def to_self
+      self
     end
 
     def ==(other)

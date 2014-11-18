@@ -62,7 +62,7 @@ module Ru
     def prepare_code(code)
       if code.kind_of?(String)
         if code.start_with?('[')
-          code = 'to_stdout' + code
+          code = 'to_self' + code
         elsif code.start_with?('! ')
           code = code[2..-1]
         end
