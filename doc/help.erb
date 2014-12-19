@@ -10,7 +10,7 @@ To sum the lines of a list of integers:
 ru 'map(:to_i).sum' myfile
 
 Ru reads from stdin:
-$ echo "2\n3" | ru 'map(:to_i).sum'
+$ printf "2\n3" | ru 'map(:to_i).sum'
 5
 $ cat myfile | ru 'map(:to_i).sum'
 5

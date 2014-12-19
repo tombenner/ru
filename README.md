@@ -62,7 +62,7 @@ You can now use Ruby in your shell!
 For example, to sum a list of integers:
 
 ```bash
-$ echo "2\n3" | ru 'map(:to_i).sum'
+$ printf "2\n3" | ru 'map(:to_i).sum'
 5
 ```
 
@@ -74,7 +74,7 @@ See [Examples](#examples) below, too!
 Ru reads from stdin:
 
 ```bash
-$ echo "2\n3" | ru 'map(:to_i).sum'
+$ printf "2\n3" | ru 'map(:to_i).sum'
 5
 $ cat myfile | ru 'map(:to_i).sum'
 5
@@ -198,7 +198,7 @@ ru 'each_line.strip.to_a.map(:center, 80)' myfile
 Converts the lines to `Ru::File` objects (see Ru::File below).
 
 ```bash
-$ echo "foo.txt" | ru 'files.map(:updated_at).map(:strftime, ""%Y-%m-%d")'
+$ printf "foo.txt" | ru 'files.map(:updated_at).map(:strftime, ""%Y-%m-%d")'
 2014-11-08
 ```
 
@@ -219,7 +219,7 @@ The default format, `'l'`, is shown above. It prints `[omode, owner, group, size
 Selects lines which match the given regex.
 
 ```bash
-$ echo "john\npaul\ngeorge" | ru 'grep(/o[h|r]/)'
+$ printf "john\npaul\ngeorge" | ru 'grep(/o[h|r]/)'
 john
 george
 ```
@@ -229,10 +229,10 @@ george
 This is the same as [Array#map](http://www.ruby-doc.org/core-2.0/Array.html#method-i-map), but it adds a new syntax that allows you to easily pass arguments to a method. For example:
 
 ```bash
-$ echo "john\npaul" | ru 'map(:[], 0)'
+$ printf "john\npaul" | ru 'map(:[], 0)'
 j
 p
-$ echo "john\npaul" | ru 'map(:center, 8, ".")'
+$ printf "john\npaul" | ru 'map(:center, 8, ".")'
 ..john..
 ..paul..
 ```
@@ -240,8 +240,8 @@ $ echo "john\npaul" | ru 'map(:center, 8, ".")'
 Note that the examples above can also be performed with `each_line`:
 
 ```bash
-$ echo "john\npaul" | ru 'each_line[0]'
-$ echo "john\npaul" | ru 'each_line.center(8, ".")'
+$ printf "john\npaul" | ru 'each_line[0]'
+$ printf "john\npaul" | ru 'each_line.center(8, ".")'
 ```
 
 Ru::File
@@ -287,7 +287,7 @@ Saved command: sum is 'map(:to_i).sum'
 Run a saved command:
 
 ```bash
-$ echo "2\n3" | ru run sum
+$ printf "2\n3" | ru run sum
 5
 $ ru run sum myfile
 5
