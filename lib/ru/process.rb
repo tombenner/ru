@@ -50,7 +50,12 @@ module Ru
       @stdin = get_stdin(args) unless @code.start_with?('! ')
       @code = prepare_code(@code) if @code
 
-      lines = @stdin.present? ? @stdin.split("\n") : []
+      lines = []
+      unless @stdin.nil?
+        # Prevent 'invalid byte sequence in UTF-8'
+        @stdin.encode!('UTF-8', 'UTF-8', :invalid => :replace)
+        lines = @stdin.split("\n")
+      end
       array = Ru::Array.new(lines)
       output = array.instance_eval(@code) || @stdin
       output = prepare_output(output)
