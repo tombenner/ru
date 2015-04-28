@@ -4,14 +4,14 @@ module Ru
   class Process
     def initialize(options={})
       @command_manager = CommandManager.new
-      @option_printer = OptionPrinter.new
+      @option_printer  = OptionPrinter.new
     end
 
     def run
       output = process_options
       return output if output
 
-      args = ARGV
+      args      = ARGV
       first_arg = args.shift
 
       if first_arg == 'list'
@@ -27,7 +27,7 @@ module Ru
         end
         return lines.join("\n")
       elsif first_arg == 'run'
-        name = args.shift
+        name  = args.shift
         @code = @command_manager.get(name)
         if @code.blank?
           STDERR.puts "Unable to find command '#{name}'"
@@ -47,19 +47,31 @@ module Ru
         @code = first_arg
       end
 
-      @stdin = get_stdin(args) unless @code.start_with?('! ')
-      @code = prepare_code(@code) if @code
+      @stdin = get_stdin(args, @options[:stream]) unless @code.start_with?('! ')
+      @code  = prepare_code(@code) if @code
 
-      lines = []
-      unless @stdin.nil?
-        # Prevent 'invalid byte sequence in UTF-8'
-        @stdin.encode!('UTF-8', 'UTF-8', :invalid => :replace)
-        lines = @stdin.split("\n")
-      end
-      array = Ru::Array.new(lines)
-      output = array.instance_eval(@code) || @stdin
-      output = prepare_output(output)
-      output
+      context =
+        if @stdin.nil?
+          Ru::Array.new([])
+        else
+          if @options[:stream]
+            if @options[:binary]
+              Ru::Stream.new(@stdin.each_byte.lazy)
+            else
+              Ru::Stream.new(@stdin.each_line.lazy.map { |line| line.chomp("\n".freeze) })
+            end
+          else
+            if @options[:binary]
+              Ru::Array.new(@stdin.bytes)
+            else
+              # Prevent 'invalid byte sequence in UTF-8'
+              @stdin.encode!('UTF-8', 'UTF-8', invalid: :replace)
+              Ru::Array.new(@stdin.split("\n"))
+            end
+          end
+        end
+      output  = context.instance_eval(@code) || @stdin
+      prepare_output(output)
     end
 
     private
@@ -105,16 +117,32 @@ module Ru
         opts.on("-v", "--version", "Print version") do |version|
           options[:version] = true
         end
+
+        opts.on('-s', '--stream', 'Stream mode') do
+          options[:stream] = true
+        end
+
+        opts.on('-b', '--binary', 'Binary mode') do
+          options[:binary] = true
+        end
       end.parse!
       options
     end
 
-    def get_stdin(args)
+    def get_stdin(args, stream)
       paths = args
       if paths.present?
-        paths.map { |path| ::File.open(path).read }.join("\n")
+        if stream
+          ::File.open(paths[0])
+        else
+          paths.map { |path| ::File.open(path).read }.join("\n")
+        end
       else
-        STDIN.read
+        if stream
+          STDIN
+        else
+          STDIN.read
+        end
       end
     end
   end

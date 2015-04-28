@@ -57,7 +57,7 @@ module Ru
     end
 
     def to_s
-      self.to_a.join("\n")
+      to_a.join("\n")
     end
 
     def to_self
@@ -68,15 +68,17 @@ module Ru
       self.to_a == other.to_a
     end
 
+    private
+
     def method_missing(method, *args, &block)
       delegate_to_array(method, *args, &block)
     end
 
-    private
-
     def delegate_to_array(method, *args, &block)
-      result = to_a.send(method, *args, &block)
-      if result.kind_of?(Enumerable)
+      result = @data.send(method, *args, &block)
+      if result.kind_of? Enumerator::Lazy
+        Ru::Stream.new(result)
+      elsif result.kind_of? ::Array
         self.class.new(result)
       else
         result

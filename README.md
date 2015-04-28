@@ -100,6 +100,36 @@ The code argument is run as if it has `$stdin.each_line.map(&:chomp).` prepended
 
 In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations, like `each_line`, `files`, and `grep`, and it improves `map`. See [Methods](#methods) for more.
 
+Stream mode
+-----------
+If input data is very large or of undefined size it may be better to process it line by line without loading the whole data into memory.
+This can be done by activating stream mode (which utilizes Enumerator::Lazy) by passing `-s` or `--stream` flag.
+Note, that in stream mode Ru can process only one file or input stream at a time.
+
+For example, let's count how many lines there are in the /dev/urandom :)
+
+```bash
+$ cat /dev/urandom | ru -s 'inject(0){|a| puts a if a % 100000 == 0; a+1 }'
+```
+
+Or how many zeros there are in the /dev/zero :)
+
+Note, that there are no lines in the stream, so we have to active binary mode by passing `-b` or `--binary` flag.
+
+```bash
+$ cat /dev/zero | ru -s -b 'inject(0){|a| puts a if a % 10000000 == 0; a+1 }'
+```
+
+As you can see, this allows to read stream or file byte by byte.
+
+```bash
+$ echo 'test' > /tmp/test && ru -b 'join(" ")' /tmp/test
+116 101 115 116 10
+```
+
+Note, that memory consumption is constant no matter how long those commands are running.
+You can interrupt them with Ctrl+C.
+
 Examples
 --------
 
