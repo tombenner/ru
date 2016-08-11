@@ -3,8 +3,7 @@ require 'optparse'
 module Ru
   class Process
     def initialize(options={})
-      @command_manager = CommandManager.new
-      @option_printer  = OptionPrinter.new
+      @option_printer = OptionPrinter.new
     end
 
     def run
@@ -14,32 +13,7 @@ module Ru
       args      = ARGV
       first_arg = args.shift
 
-      if first_arg == 'list'
-        commands = @command_manager.all
-        if commands.present?
-          lines = ['Saved commands:']
-          lines += commands.sort_by(&:first).map { |name, code| "#{name}\t#{code}" }
-        else
-          lines = [
-            'No saved commands. To save a command, use `save`:',
-            "ru save sum 'map(:to_i).sum'"
-          ]
-        end
-        return lines.join("\n")
-      elsif first_arg == 'run'
-        name  = args.shift
-        @code = @command_manager.get(name)
-        if @code.blank?
-          STDERR.puts "Unable to find command '#{name}'"
-          exit 1
-          return
-        end
-      elsif first_arg == 'save'
-        name = args[0]
-        code = args[1]
-        @command_manager.save(name, code)
-        return "Saved command: #{name} is '#{code}'"
-      elsif first_arg.blank?
+      if first_arg.blank?
         STDERR.puts @option_printer.run(:help)
         exit 1
         return

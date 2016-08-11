@@ -79,60 +79,6 @@ describe Ru::Process do
       end
     end
 
-    describe "command management" do
-      describe "list" do
-        it "lists the commands" do
-          allow_any_instance_of(Ru::CommandManager).to receive(:get_commands).and_return({
-            'product' => 'map(:to_i).reduce(:*)',
-            'sum' => 'map(:to_i).sum',
-          })
-          out = run(['list'])
-          expect(out).to eq("Saved commands:\nproduct\tmap(:to_i).reduce(:*)\nsum\tmap(:to_i).sum")
-        end
-
-        context "no saved commands" do
-          it "shows a message" do
-            allow_any_instance_of(Ru::CommandManager).to receive(:get_commands).and_return({})
-            out = run(['list'])
-            expect(out).to eq("No saved commands. To save a command, use `save`:\nru save sum 'map(:to_i).sum'")
-          end
-        end
-      end
-
-      describe "run" do
-        it "runs the command" do
-          allow_any_instance_of(Ru::CommandManager).to receive(:get_commands).and_return({ 'sum' => 'map(:to_i).sum' })
-          out = run(['run', 'sum'], "2\n3")
-          expect(out).to eq('5')
-        end
-
-        context "no command name" do
-          it "raises an InvalidNameError" do
-            expect { run(['run']) }.to raise_error(Ru::CommandManager::InvalidNameError)
-          end
-        end
-      end
-
-      describe "save" do
-        it "saves the command" do
-          allow_any_instance_of(Ru::CommandManager).to receive(:save_commands)
-          run(['save', 'foo', 'map(:to_i).sum'])
-        end
-
-        context "no code" do
-          it "raises an InvalidCodeError" do
-            expect { run(['save', 'foo']) }.to raise_error(Ru::CommandManager::InvalidCodeError)
-          end
-        end
-
-        context "invalid command name" do
-          it "raises an InvalidNameError" do
-            expect { run(['save', 'foo-bar', 'map(:to_i).sum']) }.to raise_error(Ru::CommandManager::InvalidNameError)
-          end
-        end
-      end
-    end
-
     describe "options" do
       context "-h" do
         it "shows help" do
