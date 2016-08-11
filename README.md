@@ -347,7 +347,7 @@ Print the installed version of Ru.
 Testing
 -------
 
-Ru is tested against Active Support 3 and 4. If you'd like to submit a PR, please be sure to use [Appraisal](https://github.com/thoughtbot/appraisal) to test your changes in both contexts:
+Ru is tested against Active Support 3, 4 and 5. If you'd like to submit a PR, please be sure to use [Appraisal](https://github.com/thoughtbot/appraisal) to test your changes in all contexts:
 
 ```bash
 appraisal rspec
