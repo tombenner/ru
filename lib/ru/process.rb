@@ -2,7 +2,8 @@ require 'optparse'
 
 module Ru
   class Process
-    def initialize(options={})
+
+    def initialize
       @option_printer = OptionPrinter.new
     end
 
@@ -10,19 +11,16 @@ module Ru
       output = process_options
       return output if output
 
-      args      = ARGV
-      first_arg = args.shift
+      args  = ARGV.dup
+      @code = args.shift
 
-      if first_arg.blank?
-        STDERR.puts @option_printer.run(:help)
-        exit 1
+      if @code.blank?
+        $stderr.puts @option_printer.run(:help)
         return
-      else
-        @code = first_arg
       end
 
       @stdin = get_stdin(args, @options[:stream]) unless @code.start_with?('! ')
-      @code  = prepare_code(@code) if @code
+      @code  = prepare_code(@code)
 
       context =
         if @stdin.nil?
@@ -45,6 +43,7 @@ module Ru
           end
         end
       output  = context.instance_eval(@code) || @stdin
+
       prepare_output(output)
     end
 
@@ -84,11 +83,11 @@ module Ru
     def get_options
       options = {}
       OptionParser.new do |opts|
-        opts.on("-h", "--help", "Print help") do |help|
+        opts.on("-h", "--help", "Print help") do
           options[:help] = true
         end
 
-        opts.on("-v", "--version", "Print version") do |version|
+        opts.on("-v", "--version", "Print version") do
           options[:version] = true
         end
 
@@ -103,19 +102,18 @@ module Ru
       options
     end
 
-    def get_stdin(args, stream)
-      paths = args
+    def get_stdin(paths, stream)
       if paths.present?
         if stream
           ::File.open(paths[0])
         else
-          paths.map { |path| ::File.open(path).read }.join("\n")
+          paths.map { |path| ::File.read(path) }.join("\n")
         end
       else
         if stream
-          STDIN
+          $stdin
         else
-          STDIN.read
+          $stdin.read
         end
       end
     end

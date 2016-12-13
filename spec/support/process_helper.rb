@@ -13,7 +13,7 @@ module ProcessHelper
       allow(stdin_double).to receive(:read).and_return(stdin)
       allow(stdin_double).to receive(:each_line).and_return(stdin.each_line)
       allow(stdin_double).to receive(:each_byte).and_return(stdin.each_byte)
-      stub_const('STDIN', stdin_double)
+      $stdin = stdin_double
     end
 
     process = Ru::Process.new
