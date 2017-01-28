@@ -19,7 +19,7 @@ module Ru
         return
       end
 
-      @stdin = get_stdin(args, @options[:stream]) unless @code.start_with?('! ')
+      @stdin = get_stdin(args, @options[:stream]) unless @code.start_with?('!')
       @code  = prepare_code(@code)
 
       context =
@@ -53,8 +53,8 @@ module Ru
       if code.kind_of?(String)
         if code.start_with?('[')
           code = 'to_self' + code
-        elsif code.start_with?('! ')
-          code = code[2..-1]
+        elsif code.start_with?('!')
+          code = code[1..-1]
         end
       end
       code
