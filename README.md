@@ -89,10 +89,10 @@ $ ru 'map(:to_i).sum' myfile myfile
 10
 ```
 
-You can also run Ruby code without any input by prepending a `! `:
+You can also run Ruby code without any input by prepending a `=`:
 
 ```bash
-$ ru '! 2 + 3'
+$ ru '=2 + 3'
 5
 ```
 
