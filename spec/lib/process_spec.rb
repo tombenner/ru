@@ -57,8 +57,8 @@ describe Ru::Process do
       expect(out).to eq("foo\nfoo\nfoo")
     end
 
-    it "runs code prepended by '! '" do
-      out = run('! 2 + 3')
+    it "runs code prepended by '='" do
+      out = run('=2 + 3')
       expect(out).to eq('5')
     end
 
