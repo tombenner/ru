@@ -19,8 +19,8 @@ module Ru
         return
       end
 
-      @stdin = get_stdin(args, @options[:stream]) unless @code.start_with?('=')
-      @code  = prepare_code(@code)
+      @parsed = prepare_code(@code)
+      @stdin  = get_stdin(args, @options[:stream]) if @parsed[:get_stdin]
 
       context =
         if @stdin.nil?
@@ -42,7 +42,9 @@ module Ru
             end
           end
         end
-      output  = context.instance_eval(@code) || @stdin
+
+      output = context.instance_eval(@parsed[:code])
+      output = @stdin if output == nil
 
       prepare_output(output)
     end
@@ -50,14 +52,17 @@ module Ru
     private
 
     def prepare_code(code)
-      if code.kind_of?(String)
-        if code.start_with?('[')
-          code = 'to_self' + code
-        elsif code.start_with?('=')
-          code = code[1..-1]
-        end
+      return code unless code.kind_of?(String)
+      if code.start_with?('[')
+        { code: "to_self#{code}", get_stdin: true }
+      elsif code.start_with?('=')
+        { code: code[1..-1], get_stdin: false }
+      elsif code.start_with?('!')
+        ActiveSupport::Deprecation.warn %('!1+2' syntax is going to be replaced with '=1+2')
+        { code: code[1..-1], get_stdin: false }
+      else
+        { code: code, get_stdin: true }
       end
-      code
     end
 
     def prepare_output(output)
