@@ -1,9 +1,10 @@
 require 'erb'
+require 'ostruct'
 
 module Ru
   class OptionPrinter
     def exists?(option_key)
-      options[option_key].present?
+      ! (options[option_key].nil? || options[option_key].empty?)
     end
 
     def run(option_key, option_value=nil)

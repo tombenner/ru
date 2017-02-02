@@ -14,7 +14,7 @@ module Ru
       args  = ARGV.dup
       @code = args.shift
 
-      if @code.blank?
+      if @code.empty?
         $stderr.puts @option_printer.run(:help)
         return
       end
@@ -43,7 +43,13 @@ module Ru
           end
         end
 
-      output = context.instance_eval(@parsed[:code])
+      begin
+        output = context.instance_eval(@parsed[:code])
+      rescue NoMethodError
+        require 'active_support/all'
+
+        output = context.instance_eval(@parsed[:code])
+      end
       output = @stdin if output == nil
 
       prepare_output(output)
@@ -108,7 +114,7 @@ module Ru
     end
 
     def get_stdin(paths, stream)
-      if paths.present?
+      if ! paths.empty?
         if stream
           ::File.open(paths[0])
         else
