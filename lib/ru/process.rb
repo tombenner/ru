@@ -14,7 +14,7 @@ module Ru
       args  = ARGV.dup
       @code = args.shift
 
-      if @code.blank?
+      if @code.empty?
         $stderr.puts @option_printer.run(:help)
         return
       end
@@ -43,7 +43,13 @@ module Ru
           end
         end
 
-      output = context.instance_eval(@parsed[:code])
+      begin
+        output = context.instance_eval(@parsed[:code])
+      rescue NoMethodError
+        require 'active_support/all'
+
+        output = context.instance_eval(@parsed[:code])
+      end
       output = @stdin if output == nil
 
       prepare_output(output)
@@ -58,6 +64,7 @@ module Ru
       elsif code.start_with?('=')
         { code: code[1..-1], get_stdin: false }
       elsif code.start_with?('!')
+        require 'active_support/deprecation'
         ActiveSupport::Deprecation.warn %('!1+2' syntax is going to be replaced with '=1+2')
         { code: code[1..-1], get_stdin: false }
       else
@@ -108,7 +115,7 @@ module Ru
     end
 
     def get_stdin(paths, stream)
-      if paths.present?
+      if ! paths.empty?
         if stream
           ::File.open(paths[0])
         else
