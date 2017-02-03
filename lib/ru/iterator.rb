@@ -2,7 +2,7 @@ module Ru
   class Iterator
     class << self
       def redefined_methods
-        @redefined_methods ||= begin 
+        @redefined_methods ||= begin
           preserved_methods = %{initialize method_missing respond_to? to_a}
           [].public_methods.select do |method|
             method = method.to_s
@@ -12,16 +12,28 @@ module Ru
       end
     end
 
-    def initialize(array)
-      @array = array
+    def initialize(enum)
+      @enum = enum
     end
 
     def to_a
-      Ru::Array.new(@array)
+      case @enum
+      when ::Array
+        Ru::Array.new(@enum)
+      when Ru::Array
+        @enum
+      when Ru::Stream
+        @enum.to_a
+      end
     end
 
     def to_stdout
-      to_a.join("\n")
+      case @enum
+      when ::Array
+        @enum.join("\n")
+      else
+        @enum.to_s
+      end
     end
 
     private
@@ -31,7 +43,7 @@ module Ru
     end
 
     def map_method(method, *args, &block)
-      @array.map! { |item| item.send(method, *args, &block) }
+      @enum = @enum.map { |item| item.send(method, *args, &block) }
       self
     end
 

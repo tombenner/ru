@@ -89,16 +89,46 @@ $ ru 'map(:to_i).sum' myfile myfile
 10
 ```
 
-You can also run Ruby code without any input by prepending a `! `:
+You can also run Ruby code without any input by prepending a `=`:
 
 ```bash
-$ ru '! 2 + 3'
+$ ru '=2 + 3'
 5
 ```
 
 The code argument is run as if it has `$stdin.each_line.map(&:chomp).` prepended to it. The result is converted to a string and printed. So, if you run `ru 'map(&:to_i).sum'`, you can think of it as running `puts $stdin.each_line.map(&:chomp).map(&:to_i).sum`.
 
 In addition to the methods provided by Ruby Core and Active Support, Ru provides other methods for performing transformations, like `each_line`, `files`, and `grep`, and it improves `map`. See [Methods](#methods) for more.
+
+Stream mode
+-----------
+If input data is very large or of undefined size it may be better to process it line by line without loading the whole data into memory.
+This can be done by activating stream mode (which utilizes Enumerator::Lazy) by passing `-s` or `--stream` flag.
+Note, that in stream mode Ru can process only one file or input stream at a time.
+
+For example, let's count how many lines there are in the /dev/urandom :)
+
+```bash
+$ cat /dev/urandom | ru -s 'inject(0){|a| puts a if a % 100000 == 0; a+1 }'
+```
+
+Or how many zeros there are in the /dev/zero :)
+
+Note, that there are no lines in the stream, so we have to active binary mode by passing `-b` or `--binary` flag.
+
+```bash
+$ cat /dev/zero | ru -s -b 'inject(0){|a| puts a if a % 10000000 == 0; a+1 }'
+```
+
+As you can see, this allows to read stream or file byte by byte.
+
+```bash
+$ echo 'test' > /tmp/test && ru -b 'join(" ")' /tmp/test
+116 101 115 116 10
+```
+
+Note, that memory consumption is constant no matter how long those commands are running.
+You can interrupt them with Ctrl+C.
 
 Examples
 --------
@@ -268,41 +298,6 @@ The [`files`](#files) method returns an enumerable of `Ru::File`s, which are sim
 * `updated_at` (alias for mtime)
 * `world_readable?`
 
-Saved Commands
---------------
-
-Ru lets you save commands by name, so that you can easily use them later.
-
-#### save
-
-Save a command for future use:
-
-```bash
-$ ru save sum 'map(:to_i).sum'
-Saved command: sum is 'map(:to_i).sum'
-```
-
-#### run
-
-Run a saved command:
-
-```bash
-$ printf "2\n3" | ru run sum
-5
-$ ru run sum myfile
-5
-```
-
-#### list
-
-List all of your saved commands:
-
-```bash
-$ ru list
-Saved commands:
-sum	map(:to_i).sum
-```
-
 Options
 -------
 
@@ -317,7 +312,7 @@ Print the installed version of Ru.
 Testing
 -------
 
-Ru is tested against Active Support 3 and 4. If you'd like to submit a PR, please be sure to use [Appraisal](https://github.com/thoughtbot/appraisal) to test your changes in both contexts:
+Ru is tested against Active Support 3, 4 and 5. If you'd like to submit a PR, please be sure to use [Appraisal](https://github.com/thoughtbot/appraisal) to test your changes in all contexts:
 
 ```bash
 appraisal rspec

@@ -4,9 +4,10 @@ require_relative '../lib/ru'
 
 begin
   process = Ru::Process.new
-  puts process.run
-rescue => e
-  STDERR.puts e.message
-  STDERR.puts e.backtrace.join("\n")
-  exit 1
+  result = process.run
+  puts result unless result.nil?
+rescue => ex
+  $stderr.puts ex.message
+  $stderr.puts ex.backtrace.join("\n")
+  exit false
 end

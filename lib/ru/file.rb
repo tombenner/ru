@@ -38,7 +38,12 @@ module Ru
     end
 
     def group
-      Etc.getgrgid(gid).name
+      grgid = Etc.getgrgid(gid)
+      if grgid.nil?       # running on Windows
+        ''
+      else
+        grgid.name
+      end
     end
 
     def mode
@@ -54,7 +59,12 @@ module Ru
     end
 
     def owner
-      Etc.getpwuid(uid).name
+      pwuid = Etc.getpwuid(uid)
+      if pwuid.nil?       # running on Windows
+        ''
+      else
+        pwuid.name
+      end
     end
 
     def size
